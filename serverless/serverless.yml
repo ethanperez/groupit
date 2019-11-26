@@ -1,0 +1,25 @@
+service: groupit
+
+provider:
+  name: aws
+  runtime: java8
+  profile: groupit
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - ses:SendEmail
+      Resource: "*"
+
+package:
+  artifact: build/libs/hello-dev-all.jar
+
+functions:
+  hello:
+    handler: com.serverless.Handler
+    events:
+      - http:
+          path: hello
+          method: get
+      - schedule:
+          rate: rate(10 minutes)
+          enabled: false
