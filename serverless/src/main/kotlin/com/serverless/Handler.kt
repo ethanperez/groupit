@@ -1,41 +1,44 @@
 package com.serverless
 
-import com.amazonaws.regions.Regions
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestHandler
-import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder
-import com.amazonaws.services.simpleemail.model.*
+import com.google.gson.Gson
+import com.serverless.models.Post
+import com.serverless.models.TemplateData
+import com.serverless.services.RedditService
+import net.dean.jraw.models.SubredditSort
+import net.dean.jraw.models.TimePeriod
 import org.apache.logging.log4j.LogManager
+import software.amazon.awssdk.regions.Region
+import software.amazon.awssdk.services.ses.SesClient
+import software.amazon.awssdk.services.ses.model.Destination
+import software.amazon.awssdk.services.ses.model.SendTemplatedEmailRequest
 
 class Handler:RequestHandler<Map<String, Any>, ApiGatewayResponse> {
   override fun handleRequest(input:Map<String, Any>, context:Context):ApiGatewayResponse {
-    LOG.info("received: " + input.keys.toString())
 
-    val client = AmazonSimpleEmailServiceClientBuilder.standard().apply {
-      region = Regions.US_EAST_1.toString()
+    val redditClient = RedditService().client
+    val a = redditClient.subreddit("nba").posts().sorting(SubredditSort.TOP).timePeriod(TimePeriod.DAY).limit(5).build()
+    val posts = a.next().map { Post(it.title, it.url) }.toList()
+
+    val templateDataString = Gson().toJson(TemplateData("Here's an email", posts))
+
+    val client = SesClient.builder().apply {
+      region(Region.US_EAST_1)
     }.build()
 
-    val request = SendEmailRequest().apply {
-      destination = Destination().withToAddresses("test@ethanperez.com")
-      message = Message().apply {
-        body = Body().apply {
-          text = Content().apply {
-            data = "this is some text"
-          }
-        }
-        subject = Content().apply {
-          data = "Welcome Message"
-        }
-      }
-      source = "test@t4k.pw"
-    }
+    val templateEmailRequest = SendTemplatedEmailRequest.builder()
+            .destination(Destination.builder().toAddresses("ethan@ethanperez.com").build())
+            .source("GroupIt <letter@groupit.email>")
+            .template("GroupItBasic")
+            .templateData(templateDataString)
+            .build()
 
-    client.sendEmail(request)
+    client.sendTemplatedEmail(templateEmailRequest)
+
 
     return ApiGatewayResponse.build {
       statusCode = 200
-      objectBody = HelloResponse("Go Serverless v1.x! Your Kotlin function executed successfully!", input)
-      headers = mapOf("X-Powered-By" to "AWS Lambda & serverless")
     }
   }
 

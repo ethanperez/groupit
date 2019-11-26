@@ -1,0 +1,7 @@
+<h1>{{subject}}</h1>
+<p>Here's what you missed from Reddit over the last 12 hours</p>
+<ul>
+  {{#each posts}}
+    <li><a href="{{href}}">{{title}}</a></li>
+  {{/each}}
+</ul>

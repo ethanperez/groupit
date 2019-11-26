@@ -7,7 +7,7 @@ provider:
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - ses:SendEmail
+        - ses:SendTemplatedEmail
       Resource: "*"
 
 package:
@@ -16,10 +16,14 @@ package:
 functions:
   hello:
     handler: com.serverless.Handler
+    timeout: 10
+    environment:
+      REDDIT_CLIENT_ID: ${env:REDDIT_CLIENT_ID}
+      REDDIT_CLIENT_SECRET: ${env:REDDIT_CLIENT_SECRET}
     events:
       - http:
           path: hello
           method: get
       - schedule:
-          rate: rate(10 minutes)
-          enabled: false
+          rate: cron(0 11,22 * * ? *)
+          enabled: true
