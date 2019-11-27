@@ -16,7 +16,7 @@ package:
 functions:
   hello:
     handler: com.serverless.Handler
-    timeout: 10
+    timeout: 20
     environment:
       REDDIT_CLIENT_ID: ${env:REDDIT_CLIENT_ID}
       REDDIT_CLIENT_SECRET: ${env:REDDIT_CLIENT_SECRET}

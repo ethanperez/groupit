@@ -2,7 +2,7 @@
   "Template": {
     "TemplateName": "GroupItBasic",
     "SubjectPart": "{{subject}}",
-    "HtmlPart": "<h1>{{subject}}</h1><p>Here's what you missed from Reddit over the last 12 hours</p><ul>{{#each posts}}<li><a href={{href}}>{{title}}</a></li>{{/each}}</ul>",
+    "HtmlPart": "<html><head><link href='https://fonts.googleapis.com/css?family=Alatsi' rel='stylesheet' type='text/css'><style>body{font-family:'Alatsi',sans-serif;}.post{position:relative;margin-top:10px;}.postLink{font-size:14px;margin-right:5px;}a.postComments{position:absolute;bottom:0;font-size:10px;color:darkorange !important;text-decoration:none;}a.postComments:hover{color:grey;}</style></head><body><h1>{{title}}</h1><h2>{{subheading}}</h2>{{#each data}}<h3>{{name}}</h3>{{#each posts}}<div class='post'><a class='postLink' href={{postHref}}>{{title}}</a><a class='postComments' href={{commentHref}}>{{commentCount}} comments</a></div>{{/each}}{{/each}}</body></html>",
     "TextPart": "Here is some text"
   }
 }

@@ -1,0 +1,37 @@
+{
+  "subject": "yes",
+  "title": "Here's you're update for today",
+  "subheading": "subheading",
+  "data": [
+    {
+      "source": "reddit",
+      "name": "r/NBA",
+      "posts": [
+        {
+          "title": "this be the title and it is really long so le't ssee what heppsn when it wraps around hehehehe",
+          "postHref": "https://www.something.com",
+          "commentHref": "https://www.asfdf.com",
+          "commentCount": 45
+        },
+        {
+          "title": "this be the title 2",
+          "postHref": "https://www.something.com",
+          "commentHref": "https://www.asfdf.com",
+          "commentCount": 45
+        }
+      ]
+    },
+    {
+      "source": "reddit",
+      "name": "r/NFL",
+      "posts": [
+        {
+          "title": "this be the title",
+          "postHref": "https://www.something.com",
+          "commentHref": "https://www.asfdf.com",
+          "commentCount": 45
+        }
+      ]
+    }
+  ]
+}
