@@ -29,9 +29,9 @@ class Handler:RequestHandler<Map<String, Any>, ApiGatewayResponse> {
     }
     val templateDataString = Gson().toJson(TemplateData("Update for Today", "", "", postGroup))
 
-    val client = SesClient.builder().apply {
-      region(Region.US_EAST_1)
-    }.build()
+    val client = SesClient.builder()
+            .region(Region.US_EAST_1)
+            .build()
 
     val templateEmailRequest = SendTemplatedEmailRequest.builder()
             .destination(Destination.builder().toAddresses("ethan@ethanperez.com").build())
@@ -41,8 +41,7 @@ class Handler:RequestHandler<Map<String, Any>, ApiGatewayResponse> {
             .build()
 
     client.sendTemplatedEmail(templateEmailRequest)
-
-
+    
     return ApiGatewayResponse.build {
       statusCode = 200
     }
