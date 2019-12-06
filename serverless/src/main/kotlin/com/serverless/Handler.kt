@@ -23,7 +23,7 @@ class Handler:RequestHandler<Map<String, Any>, ApiGatewayResponse> {
 
     val postGroup = subreddits.map { subredditName ->
       val rawPosts = redditClient.subreddit(subredditName).posts().sorting(SubredditSort.TOP).timePeriod(TimePeriod.DAY).limit(5).build()
-      val formattedPosts = rawPosts.next().map { Post(it.title, it.url, it.permalink, it.commentCount) }.toList()
+      val formattedPosts = rawPosts.next().map { Post(it.title, it.url, "https://old.reddit.com${it.permalink}", it.commentCount) }.toList()
 
       PostGroup(PostSource.Reddit, "/r/$subredditName", formattedPosts)
     }
@@ -41,7 +41,7 @@ class Handler:RequestHandler<Map<String, Any>, ApiGatewayResponse> {
             .build()
 
     client.sendTemplatedEmail(templateEmailRequest)
-    
+
     return ApiGatewayResponse.build {
       statusCode = 200
     }
